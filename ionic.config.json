@@ -1,0 +1,7 @@
+{
+  "name": "KlaverjasscoreDHK",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
