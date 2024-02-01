@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Start nieuwe boom</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Nieuwe boom starten</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <p>Voer de namen van de vier spelers in. Bij wij vul je de namen in van de teller en maat en bij zij van de twee overige spelers.</p>
+  <form [formGroup]="newBoom" (ngSubmit)="startGame()">
+    <ion-grid>
+      <ion-row><h2>Wij</h2></ion-row>
+      <ion-row>
+        <ion-col><ion-input placeholder="Speler 1" formControlName="speler1"></ion-input></ion-col>
+        <ion-col><ion-input placeholder="Speler 2" formControlName="speler2"></ion-input></ion-col>
+      </ion-row>
+      <ion-row><h2>Zij</h2></ion-row>
+      <ion-row>
+        <ion-col><ion-input placeholder="Speler 3" formControlName="speler3"></ion-input></ion-col>
+        <ion-col><ion-input placeholder="Speler 4" formControlName="speler4"></ion-input></ion-col>
+      </ion-row>
+      <ion-row><ion-button type="submit">Start spel</ion-button></ion-row>
+    </ion-grid></form>
+
+</ion-content>

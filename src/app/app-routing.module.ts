@@ -11,6 +11,14 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'start-boom',
+    loadChildren: () => import('./boom/start-boom/start-boom.module').then( m => m.StartBoomPageModule)
+  },
+  {
+    path: 'scoreblad-boom',
+    loadChildren: () => import('./boom/scoreblad-boom/scoreblad-boom.module').then( m => m.ScorebladBoomPageModule)
+  },
 ];
 
 @NgModule({
