@@ -9,32 +9,65 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class ScorebladBoomPage implements OnInit {
 
+  scoreWij: number = 0;
+  roemWij: number = 0;
+  scoreZij: number = 0;
+  roemZij: number = 0;
+
   constructor(public score: BoomScoreService) { }
 
-  hand = new FormGroup({
-    scoreWij: new FormControl(),
-    roemWij: new FormControl(),
-    scoreZij: new FormControl(),
-    roemZij: new FormControl(),
-  });
-
   ngOnInit() {
-    // Init observers die de tegenscore van andere partij berekent
-    this.hand.controls.scoreWij.valueChanges.subscribe(change => {
-      this.hand.controls.scoreZij.setValue(this.berekenVerschil(change));
-    });
-
-    this.hand.controls.scoreZij.valueChanges.subscribe(change => {
-      this.hand.controls.scoreWij.setValue(this.berekenVerschil(change));
-    });
   }
 
-  addHand(): void {
-
-  }
-
-  berekenVerschil(score: number): number {
+  // ++ Score berekenen functies
+  berekenTegenscore(score: number): number {
     return 162 - score;
+  }
+
+  berekenScore(score: any, team: string) {
+    const scoreNumber: number = score.target.value;
+
+    switch(team) {
+      case 'wij':
+        this.scoreWij = scoreNumber;
+        this.scoreZij = this.berekenTegenscore(scoreNumber);
+        break;
+      case 'zij':
+        this.scoreZij = scoreNumber;
+        this.scoreWij = this.berekenTegenscore(scoreNumber);
+        break;
+    }
+  }
+
+  // ++ Roem berekenen functies
+  addRoem(roem: number, team: string): void {
+    switch(team) { 
+      case "wij":
+        this.roemWij += roem;
+        break;
+      case "zij":
+        this.roemZij += roem;
+        break;
+    }
+  }
+
+  resetRoem(team: string): void {
+    switch(team) {
+      case 'wij':
+        this.roemWij = 0;
+        break;
+      case 'zij':
+        this.roemZij = 0;
+    }
+  }
+
+  // ++ Algemene functies
+  verwerkScore(): void {
+    this.score.addScore(this.scoreWij, this.scoreZij, this.roemWij, this.roemZij);
+  }
+
+  laasteScoreUndo(): void {
+    this.score.undoLastScore();
   }
 
 }

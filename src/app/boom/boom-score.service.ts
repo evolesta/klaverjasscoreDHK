@@ -47,9 +47,63 @@ export class BoomScoreService {
   reset(): void {
     this.boom = new Boom();
   }
+
+  // ++ Functies om scores te verwerken in de boom
+  addScore(scoreWij: number, scoreZij: number, 
+    roemWij: number, roemZij: number): void {
+    // Nieuw object maken en vullen met punten
+    const score = new Score();
+    score.puntenWij = scoreWij;
+    score.puntenZij = scoreZij;
+    score.roemWij = roemWij;
+    score.roemZij = roemZij;
+
+    if(this.boom.scores.length > 0) {
+      // verkrijg laatste ronde nr en verhoog deze met 1
+      const laatsteRonde = this.boom.scores[this.boom.scores.length - 1].ronde;
+      const ronde = laatsteRonde + 1;
+      score.ronde = ronde;
+    }
+    else {
+      score.ronde = 1;
+    }
+
+    // voeg score toe aan array met scores
+    this.boom.scores.push(score);
+    this.berekenTotaleScores();
+    this.save();
+  }
+
+  undoLastScore(): void {
+    this.boom.scores.pop();
+    this.berekenTotaleScores();
+    this.save();
+  }
+
+  berekenTotaleScores(): void {
+    // Doorloop de array met scores en herbereken de score
+    this.boom.puntenWij = 0;
+    this.boom.puntenZij = 0;
+    this.boom.roemWij = 0;
+    this.boom.roemZij = 0;
+    this.boom.totaalWij = 0;
+    this.boom.totaalZij = 0;
+
+    for(let i = 0; i < this.boom.scores.length; i++) {
+      this.boom.puntenWij += this.boom.scores[i].puntenWij;
+      this.boom.puntenZij += this.boom.scores[i].puntenZij;
+      this.boom.roemWij += this.boom.scores[i].roemWij;
+      this.boom.roemZij += this.boom.scores[i].roemZij;
+    }
+
+    // Bereken totaal
+    this.boom.totaalWij = this.boom.puntenWij + this.boom.roemWij;
+    this.boom.totaalZij = this.boom.puntenZij + this.boom.roemZij;
+  }
 }
 
 class Score {
+  ronde: number = 1;
   puntenWij: number = 0;
   puntenZij: number = 0;
   roemWij: number = 0;

@@ -11,9 +11,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-button color="success" id="open-modal" style="right: 100%;">Hand toevoegen</ion-button>
-
-  <ion-grid>
+  <ion-grid class="scoreblad">
     <ion-row>
       <ion-col><h2>Wij</h2></ion-col>
       <ion-col></ion-col>
@@ -26,44 +24,67 @@
     <ion-col>{{ score.boom.speler3 }}</ion-col>
     <ion-col>{{ score.boom.speler4 }}</ion-col>
   </ion-row>
+
+  <!-- Score invoer -->
   <ion-row>
-    <ion-col><b>Score</b></ion-col>
-    <ion-col><b>Roem</b></ion-col>
-    <ion-col><b>Score</b></ion-col>
-    <ion-col><b>Roem</b></ion-col>
+    <ion-col><ion-input placeholder="Score wij" [clearInput]="true" (ionInput)="berekenScore($event, 'wij')"></ion-input></ion-col>
+    <ion-col><ion-button (click)="addRoem(20, 'wij')">20</ion-button><ion-button (click)="addRoem(50, 'wij')">50</ion-button>
+      <ion-button (click)="addRoem(100, 'wij')">100</ion-button><ion-button color="danger" (click)="resetRoem('wij')">X</ion-button></ion-col>
+    <ion-col><ion-input placeholder="Score zij" [clearInput]="true" (ionInput)="berekenScore($event, 'zij')"></ion-input></ion-col>
+    <ion-col><ion-button (click)="addRoem(20, 'zij')">20</ion-button><ion-button (click)="addRoem(50, 'zij')">50</ion-button>
+      <ion-button (click)="addRoem(100, 'zij')">100</ion-button><ion-button color="danger" (click)="resetRoem('zij')">X</ion-button></ion-col>
   </ion-row>
 
-  <!-- Scoreblad -->  
-  <ion-row *ngFor="let rij of score.boom.scores">
-    <ion-col>{{ rij.puntenWij }}</ion-col>
-    <ion-col>{{ rij.roemWij }}</ion-col>
-    <ion-col>{{ rij.puntenZij }}</ion-col>
-    <ion-col>{{ rij.roemZij }}</ion-col>
+  <ion-row>
+    <ion-col><ion-input disabled>{{ scoreWij }}</ion-input></ion-col>
+    <ion-col><ion-input disabled>{{ roemWij }}</ion-input></ion-col>
+    <ion-col><ion-input disabled>{{ scoreZij }}</ion-input></ion-col>
+    <ion-col><ion-input disabled>{{ roemZij }}</ion-input></ion-col>
   </ion-row>
 
   </ion-grid>
-</ion-content>
 
-<ion-modal trigger="open-modal">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Hand toevoegen</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="addHand()" [strong]="true">Toevoegen</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <ion-item>
-        <!-- Toevoegen van een hand aan de boom scores -->
-        <form [formGroup]="hand">
-          <ion-input label="Score wij" formControlName="scoreWij"></ion-input>
-          <ion-input label="Roem wij" formControlName="roemWij"></ion-input>
-          <ion-input label="Score zij" formControlName="scoreZij"></ion-input>
-          <ion-input label="Roem zij" formControlName="roemZij"></ion-input>
-        </form>
-      </ion-item>
-    </ion-content>
-  </ng-template>
-</ion-modal>
+  <p style="text-align: center;"><ion-button color="success" (click)="verwerkScore()">Verwerk ronde &raquo;</ion-button>
+  <ion-button color="warning" (click)="laasteScoreUndo()">&laquo; Ronde terug</ion-button></p><br>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col><b>Score</b></ion-col>
+      <ion-col><b>Roem</b></ion-col>
+      <ion-col><b>Ronde</b></ion-col>
+      <ion-col><b>Score</b></ion-col>
+      <ion-col><b>Roem</b></ion-col>
+    </ion-row>
+
+     <!-- Scoreblad -->  
+    <ion-row *ngFor="let rij of score.boom.scores">
+      <ion-col>{{ rij.puntenWij }}</ion-col>
+      <ion-col>{{ rij.roemWij }}</ion-col>
+      <ion-col><i>{{ rij.ronde }}</i></ion-col>
+      <ion-col>{{ rij.puntenZij }}</ion-col>
+      <ion-col>{{ rij.roemZij }}</ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col><b>Totaal</b></ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col><b>Totaal</b></ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col><b>{{ score.boom.puntenWij }}</b></ion-col>
+      <ion-col><b>{{ score.boom.roemWij }}</b></ion-col>
+      <ion-col></ion-col>
+      <ion-col><b>{{ score.boom.puntenZij }}</b></ion-col>
+      <ion-col><b>{{ score.boom.roemZij }}</b></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>{{ score.boom.totaalWij }}</ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col>{{ score.boom.totaalZij }}</ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
