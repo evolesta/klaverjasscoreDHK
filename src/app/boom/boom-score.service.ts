@@ -89,16 +89,25 @@ export class BoomScoreService {
     this.boom.totaalWij = 0;
     this.boom.totaalZij = 0;
 
+    // Tel iedere score op bij het totaal aantal punten en roem
     for(let i = 0; i < this.boom.scores.length; i++) {
-      this.boom.puntenWij += this.boom.scores[i].puntenWij;
-      this.boom.puntenZij += this.boom.scores[i].puntenZij;
-      this.boom.roemWij += this.boom.scores[i].roemWij;
-      this.boom.roemZij += this.boom.scores[i].roemZij;
+      this.boom.puntenWij += +this.boom.scores[i].puntenWij;
+      this.boom.puntenZij += +this.boom.scores[i].puntenZij;
+      this.boom.roemWij += +this.boom.scores[i].roemWij;
+      this.boom.roemZij += +this.boom.scores[i].roemZij;
     }
 
-    // Bereken totaal
+    // Bereken totale score met roem
     this.boom.totaalWij = this.boom.puntenWij + this.boom.roemWij;
     this.boom.totaalZij = this.boom.puntenZij + this.boom.roemZij;
+  }
+
+  // ++ HELPER functies
+  
+  // Functie die teruggeeft of een boom afgerond is
+  checkAfgerond(): boolean {
+    // Als er 16 scores zijn geregistreerd is de boom afgerond
+    return this.boom.scores.length == 16;
   }
 }
 

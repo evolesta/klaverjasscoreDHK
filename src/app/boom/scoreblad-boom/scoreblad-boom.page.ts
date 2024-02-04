@@ -62,12 +62,43 @@ export class ScorebladBoomPage implements OnInit {
   }
 
   // ++ Algemene functies
+  // Checkt de score en geeft deze door aan de service
   verwerkScore(): void {
+    // Controleer of het spelende team het heeft gehaald
+
+
     this.score.addScore(this.scoreWij, this.scoreZij, this.roemWij, this.roemZij);
   }
 
   laasteScoreUndo(): void {
     this.score.undoLastScore();
+  }
+
+  resetScores(): void {
+    this.scoreWij = 0;
+    this.scoreZij = 0;
+    this.roemWij = 0;
+    this.roemZij = 0;
+  }
+
+  // Functie die teruggeeft of het spelende team het heeft gehaald
+  heeftGehaald(team: string): boolean {
+    // Het spelende team moet meer punten behalen dan het niet-spelende team (minimaal 82)
+    // Daarbij moet roem ook meegeteld worden
+    const totaleScore: number = this.scoreWij + this.roemWij + this.scoreZij + this.roemZij;
+    const teBehalenScore: number = totaleScore / 2 + 1;
+
+    // Bepaal adhv het argument voor welk team het gecontroleerd moet worden
+    switch(team) {
+      case 'wij':
+        const scoreWij: number = this.scoreWij + this.roemWij;
+        return scoreWij >= teBehalenScore;
+      
+      case 'zij':
+        const scoreZij: number = this.scoreZij + this.roemZij;
+        return scoreZij >= teBehalenScore;
+    }
+    return false;
   }
 
 }
