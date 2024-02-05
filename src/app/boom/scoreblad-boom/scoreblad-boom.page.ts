@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BoomScoreService } from '../boom-score.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-scoreblad-boom',
@@ -13,8 +14,11 @@ export class ScorebladBoomPage implements OnInit {
   roemWij: number = 0;
   scoreZij: number = 0;
   roemZij: number = 0;
+  wijNat: boolean = false;
+  zijNat: boolean = false;
 
-  constructor(public score: BoomScoreService) { }
+  constructor(public score: BoomScoreService,
+    private alert: AlertController) { }
 
   ngOnInit() {
   }
@@ -64,10 +68,8 @@ export class ScorebladBoomPage implements OnInit {
   // ++ Algemene functies
   // Checkt de score en geeft deze door aan de service
   verwerkScore(): void {
-    // Controleer of het spelende team het heeft gehaald
-
-
     this.score.addScore(this.scoreWij, this.scoreZij, this.roemWij, this.roemZij);
+    this.resetScores();
   }
 
   laasteScoreUndo(): void {
@@ -79,26 +81,61 @@ export class ScorebladBoomPage implements OnInit {
     this.scoreZij = 0;
     this.roemWij = 0;
     this.roemZij = 0;
+    this.wijNat = false;
+    this.zijNat = false;
   }
 
   // Functie die teruggeeft of het spelende team het heeft gehaald
-  heeftGehaald(team: string): boolean {
+  heeftGehaald(team: string): void {
+    this.wijNat = false;
+    this.zijNat = false;
     // Het spelende team moet meer punten behalen dan het niet-spelende team (minimaal 82)
     // Daarbij moet roem ook meegeteld worden
-    const totaleScore: number = this.scoreWij + this.roemWij + this.scoreZij + this.roemZij;
-    const teBehalenScore: number = totaleScore / 2 + 1;
+    const totaleScore: number = +this.scoreWij + +this.roemWij + +this.scoreZij + +this.roemZij;
+    var teBehalenScore: number = totaleScore / 2 + 1;
+
+    if (teBehalenScore < 82)
+      teBehalenScore = 82;
 
     // Bepaal adhv het argument voor welk team het gecontroleerd moet worden
     switch(team) {
       case 'wij':
-        const scoreWij: number = this.scoreWij + this.roemWij;
-        return scoreWij >= teBehalenScore;
+        const scoreWij: number = +this.scoreWij + +this.roemWij;
+        this.wijNat = scoreWij < teBehalenScore;
+        break;
       
       case 'zij':
-        const scoreZij: number = this.scoreZij + this.roemZij;
-        return scoreZij >= teBehalenScore;
+        const scoreZij: number = +this.scoreZij + +this.roemZij;
+        this.zijNat = scoreZij < teBehalenScore;
+        break;
     }
-    return false;
+
+    // Toon bericht als 1 van de teams nat is
+    if (this.wijNat || this.zijNat)
+      this.showNatBericht(team, teBehalenScore.toString());
+    else
+      this.showGehaaldBericht(team, teBehalenScore.toString());
+  }
+
+  async showNatBericht(team: string, teBehalenScore: string) {
+    const alert = await this.alert.create({
+      header: 'Team ' + team + ' is nat',
+      message: 'Team ' + team + ' is nat. Inclusief behaalde roem moeten er minimaal ' 
+      + teBehalenScore + ' punten worden behaald.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  async showGehaaldBericht(team: string, teBehalenScore: string) {
+    const alert = await this.alert.create({
+      header: 'Team ' + team + ' heeft het gehaald',
+      message: 'Team ' + team + ' heeft het gehaald. Zij hebben meer dan ' + teBehalenScore + ' punten behaald.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }

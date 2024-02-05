@@ -42,10 +42,14 @@
     <ion-col><ion-input disabled>{{ roemZij }}</ion-input></ion-col>
   </ion-row>
 
-  </ion-grid>
+  </ion-grid> 
 
-  <p style="text-align: center;"><ion-button color="success" (click)="verwerkScore()">Verwerk ronde &raquo;</ion-button>
-  <ion-button color="warning" (click)="laasteScoreUndo()">&laquo; Ronde terug</ion-button></p><br>
+  <p style="text-align: center;">
+    <ion-button color="secondary" (click)="heeftGehaald('wij')">Wij nat?</ion-button>
+    <ion-button color="success" (click)="verwerkScore()"><ion-icon name="add-outline"></ion-icon></ion-button>
+    <ion-button color="warning" (click)="laasteScoreUndo()"><ion-icon name="arrow-undo-outline"></ion-icon></ion-button>
+    <ion-button color="secondary" (click)="heeftGehaald('zij')">Zij nat?</ion-button>
+  </p><br>
 
   <ion-grid>
     <ion-row>
