@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'scoreblad-boom',
     loadChildren: () => import('./boom/scoreblad-boom/scoreblad-boom.module').then( m => m.ScorebladBoomPageModule)
   },
+  {
+    path: 'telhulp',
+    loadChildren: () => import('./boom/telhulp/telhulp.module').then( m => m.TelhulpPageModule)
+  },
 ];
 
 @NgModule({

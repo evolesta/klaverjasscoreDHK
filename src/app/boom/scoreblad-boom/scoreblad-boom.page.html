@@ -1,6 +1,12 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="vraagNieuweBoom()"><ion-icon name="refresh-outline"></ion-icon></ion-button>
+    </ion-buttons>
     <ion-title>Scoreblad</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openTelhulp('wij')"><ion-icon name="bulb-outline"></ion-icon></ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

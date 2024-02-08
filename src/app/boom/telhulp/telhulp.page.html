@@ -1,0 +1,63 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Annuleren</ion-button>
+    </ion-buttons>
+    <ion-title>Punten telhulp</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="voerPuntenIn()">Invoeren</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">telhulp</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <p>Gebruik deze telhulp om alle punten in de ronde te tellen. Klik op een behaalde kaart en de punten worden bij het totaal opgeteld.</p>
+
+  <ion-grid>
+    <ion-row>
+      <ion-radio-group value="wij" (ionChange)="setTeam($event)">
+        <ion-radio value="wij">Wij</ion-radio>
+        <ion-radio value="zij">Zij</ion-radio>
+      </ion-radio-group>
+    </ion-row>
+    <ion-row>
+      <ion-col>Niet-troef</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(2)">Boer 2</ion-button></ion-col>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(3)">Vrouw 3</ion-button></ion-col>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(4)">Heer 4</ion-button></ion-col>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(10)">Tien 10</ion-button></ion-col>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(11)">Aas 11</ion-button></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Troef</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(3)">Vrouw 3</ion-button></ion-col>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(4)">Heer 4</ion-button></ion-col>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(10)">Tien 10</ion-button></ion-col>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(11)">Aas 11</ion-button></ion-col>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(14)">Nel 14</ion-button></ion-col>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(20)">Boer 20</ion-button></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Overig</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col><ion-button color="medium" (click)="voegPuntenToe(10)">Laatste slag 10</ion-button></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Totaal</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>{{totaal}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

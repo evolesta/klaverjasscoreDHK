@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BoomScoreService } from '../boom-score.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { TelhulpPage } from '../telhulp/telhulp.page';
 
 @Component({
   selector: 'app-scoreblad-boom',
@@ -18,7 +20,9 @@ export class ScorebladBoomPage implements OnInit {
   zijNat: boolean = false;
 
   constructor(public score: BoomScoreService,
-    private alert: AlertController) { }
+    private alert: AlertController,
+    private router: Router,
+    private modal: ModalController) { }
 
   ngOnInit() {
   }
@@ -68,8 +72,15 @@ export class ScorebladBoomPage implements OnInit {
   // ++ Algemene functies
   // Checkt de score en geeft deze door aan de service
   verwerkScore(): void {
-    this.score.addScore(this.scoreWij, this.scoreZij, this.roemWij, this.roemZij);
-    this.resetScores();
+    // Check of de boom niet is afgerond
+    if (!this.score.checkAfgerond()) {
+      // Voeg nieuwe score toe
+      this.score.addScore(this.scoreWij, this.scoreZij, this.roemWij, this.roemZij);
+      this.resetScores();
+    } else {
+      // Boom is afgerond - toon melding
+      this.showAfgerondBericht();
+    }
   }
 
   laasteScoreUndo(): void {
@@ -117,6 +128,7 @@ export class ScorebladBoomPage implements OnInit {
       this.showGehaaldBericht(team, teBehalenScore.toString());
   }
 
+  // ++ BERICHTEN FUNCTIES
   async showNatBericht(team: string, teBehalenScore: string) {
     const alert = await this.alert.create({
       header: 'Team ' + team + ' is nat',
@@ -136,6 +148,63 @@ export class ScorebladBoomPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async showAfgerondBericht() {
+    const alert = await this.alert.create({
+      header: 'Boom afgerond',
+      message: 'Er zijn 16 rondes geregistreerd, de boom is afgerond.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  async vraagNieuweBoom() {
+    const alert = await this.alert.create({
+      header: 'Nieuwe boom',
+      message: 'Wil je een nieuwe boom beginnen?',
+      buttons: [
+        {
+          text: 'Annuleren',
+          role: 'cancel'
+        },
+        {
+          text: 'Nieuwe boom',
+          role: 'confirm',
+          handler: () => {
+            this.score.reset();
+            this.router.navigateByUrl('/start-boom');
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  // ++ MODAL functies
+  async openTelhulp(team: string) {
+    const modal = await this.modal.create({
+      component: TelhulpPage
+    });
+
+    modal.present();
+
+    // Verkrijg telpunten
+    const {data, role} = await modal.onWillDismiss();
+
+    if (role === 'confirm') {
+      switch(data.team) {
+        case 'wij':
+          this.scoreWij = data.totaal;
+          break;
+
+        case 'zij':
+          this.scoreZij = data.totaal;
+          break;
+      }
+    }
   }
 
 }
