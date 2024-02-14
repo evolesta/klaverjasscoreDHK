@@ -128,6 +128,11 @@ export class ScorebladBoomPage implements OnInit {
       this.showGehaaldBericht(team, teBehalenScore.toString());
   }
 
+  // Functie die de boom afrond
+  afrondenBoom(): void {
+    this.bevestigAfrondenBoom();
+  }
+
   // ++ BERICHTEN FUNCTIES
   async showNatBericht(team: string, teBehalenScore: string) {
     const alert = await this.alert.create({
@@ -183,6 +188,28 @@ export class ScorebladBoomPage implements OnInit {
     await alert.present();
   }
 
+  async bevestigAfrondenBoom() {
+    const alert = await this.alert.create({
+      header: 'Boom afronden',
+      message: 'Weet je zeker dat je deze boom wilt afronden?',
+      buttons: [
+        {
+          text: 'Annuleren',
+          role: 'cancel'
+        },
+        {
+          text: 'Bevestigen',
+          role: 'confirm',
+          handler: () => {
+            // to do 
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   // ++ MODAL functies
   async openTelhulp(team: string) {
     const modal = await this.modal.create({
@@ -197,11 +224,15 @@ export class ScorebladBoomPage implements OnInit {
     if (role === 'confirm') {
       switch(data.team) {
         case 'wij':
-          this.scoreWij = data.totaal;
+          const scoreWij = data.totaal;
+          this.scoreWij = scoreWij;
+          this.scoreZij = this.berekenTegenscore(scoreWij);
           break;
 
         case 'zij':
-          this.scoreZij = data.totaal;
+          const scoreZij = data.totaal;
+          this.scoreZij = scoreZij;
+          this.scoreWij = this.berekenTegenscore(scoreZij);
           break;
       }
     }
