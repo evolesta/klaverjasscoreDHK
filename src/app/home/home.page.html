@@ -17,7 +17,8 @@
     <img src="assets/klaverboer.png" class="home-klaverboer"><br>
     <ion-button routerLink="/start-boom">Nieuwe boom</ion-button><br>
     <ion-button routerLink="/scoreblad-boom" *ngIf="existingGame">Boom hervatten</ion-button><br>
-    <ion-button>Toernooi #ntm</ion-button><br>
-    <ion-button>Historie #ntm</ion-button>
+    <ion-button routerLink="/start-drie" *ngIf="existingGame">Scoreblad drie spelers</ion-button><br>
+    <ion-button color="light">Toernooi #ntm</ion-button><br>
+    <ion-button routerLink="/historie">Historie</ion-button>
   </div>
 </ion-content>

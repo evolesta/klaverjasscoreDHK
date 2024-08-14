@@ -23,6 +23,14 @@ const routes: Routes = [
     path: 'telhulp',
     loadChildren: () => import('./boom/telhulp/telhulp.module').then( m => m.TelhulpPageModule)
   },
+  {
+    path: 'start-drie',
+    loadChildren: () => import('./driespelers/start-drie/start-drie.module').then( m => m.StartDriePageModule)
+  },
+  {
+    path: 'historie',
+    loadChildren: () => import('./historie/historie.module').then( m => m.HistoriePageModule)
+  },
 ];
 
 @NgModule({

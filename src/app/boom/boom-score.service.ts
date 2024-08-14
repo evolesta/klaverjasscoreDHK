@@ -5,7 +5,7 @@ import { Injectable, OnInit } from '@angular/core';
 })
 export class BoomScoreService {
 
-  // initialiseer een nieuw boom object
+  // Declareer een nieuw boom object
   public boom: Boom;
 
   constructor() {
@@ -38,10 +38,7 @@ export class BoomScoreService {
 
   existingGame(): boolean {
     const exists = localStorage.getItem('boom');
-    if (exists == null)
-      return false;
-    else
-      return true;
+    return exists != null;
   }
 
   reset(): void {
