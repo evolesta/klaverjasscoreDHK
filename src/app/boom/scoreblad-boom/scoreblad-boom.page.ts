@@ -72,19 +72,25 @@ export class ScorebladBoomPage implements OnInit {
   // ++ Algemene functies
   // Checkt de score en geeft deze door aan de service
   verwerkScore(): void {
-    // Check of de boom niet is afgerond
-    if (!this.score.checkAfgerond()) {
-      // Voeg nieuwe score toe
-      this.score.addScore(this.scoreWij, this.scoreZij, this.roemWij, this.roemZij);
-      this.resetScores();
-    } else {
-      // Boom is afgerond - toon melding
-      this.showAfgerondBericht();
+    // check of er een score is ingevuld
+    if (this.scoreWij == 0 || this.scoreZij == 0) {
+      this.showError("Er is geen score ingevuld.");
+    }
+    else {
+      // Check of de boom niet is afgerond
+      if (!this.score.checkAfgerond()) {
+       // Voeg nieuwe score toe
+       this.score.addScore(this.scoreWij, this.scoreZij, this.roemWij, this.roemZij);
+        this.resetScores();
+      } else {
+        // Boom is afgerond - toon melding
+        this.showAfgerondBericht();
+    }
     }
   }
 
   laasteScoreUndo(): void {
-    this.score.undoLastScore();
+    this.showSure();
   }
 
   resetScores(): void {
@@ -102,27 +108,27 @@ export class ScorebladBoomPage implements OnInit {
     this.zijNat = false;
     // Het spelende team moet meer punten behalen dan het niet-spelende team (minimaal 82)
     // Daarbij moet roem ook meegeteld worden
-    const totaleScore: number = +this.scoreWij + +this.roemWij + +this.scoreZij + +this.roemZij;
-    var teBehalenScore: number = totaleScore / 2 + 1;
-
-    if (teBehalenScore < 82)
-      teBehalenScore = 82;
+    const scoreWij: number = +this.scoreWij + +this.roemWij;
+    const scoreZij: number = +this.scoreZij + +this.roemZij;
+    var teBehalenScore: number;
 
     // Bepaal adhv het argument voor welk team het gecontroleerd moet worden
     switch(team) {
       case 'wij':
-        const scoreWij: number = +this.scoreWij + +this.roemWij;
+        teBehalenScore = scoreZij + this.roemZij;
         this.wijNat = scoreWij < teBehalenScore;
         break;
       
       case 'zij':
-        const scoreZij: number = +this.scoreZij + +this.roemZij;
+        teBehalenScore = scoreWij + this.roemWij;
         this.zijNat = scoreZij < teBehalenScore;
         break;
     }
 
     // Toon bericht als 1 van de teams nat is
-    if (this.wijNat || this.zijNat)
+    if (scoreWij == 0 || scoreZij == 0)
+      this.showError('Er is geen score ingevuld.');
+    else if (this.wijNat || this.zijNat)
       this.showNatBericht(team, teBehalenScore.toString());
     else
       this.showGehaaldBericht(team, teBehalenScore.toString());
@@ -160,6 +166,29 @@ export class ScorebladBoomPage implements OnInit {
       header: 'Boom afgerond',
       message: 'Er zijn 16 rondes geregistreerd, de boom is afgerond.',
       buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  async showError(message: string) {
+    const alert = await this.alert.create({
+      header: 'Fout',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  async showSure() {
+    const alert = await this.alert.create({
+      header: 'Weet je het zeker?',
+      message: 'Weet je het zeker dat je wilt doorgaan?',
+      buttons: [
+        {text: 'Annuleren', role: 'cancel' },
+        { text: 'Verwijderen', role: 'confirm', handler: () => { this.score.undoLastScore(); } }
+      ]
     });
 
     await alert.present();
