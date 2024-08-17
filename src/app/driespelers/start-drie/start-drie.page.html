@@ -1,13 +1,29 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>start-drie</ion-title>
+    <ion-title>Start boom drie spelers</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">start-drie</ion-title>
+      <ion-title size="large">Start boom drie spelers</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <form [formGroup]="spelers" (ngSubmit)="startGame()">
+    <ion-grid>
+      <ion-row>
+        <ion-col><b>Speler 1</b></ion-col>
+        <ion-col><b>Speler 2</b></ion-col>
+        <ion-col><b>Speler 3</b></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col><ion-input placeholder="Speler 1" formControlName="speler1"></ion-input></ion-col>
+        <ion-col><ion-input placeholder="Speler 2" formControlName="speler2"></ion-input></ion-col>
+        <ion-col><ion-input placeholder="Speler 3" formControlName="speler3"></ion-input></ion-col>
+      </ion-row>
+      <ion-row><ion-button type="submit">Start spel</ion-button></ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

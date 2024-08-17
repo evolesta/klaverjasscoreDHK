@@ -39,9 +39,36 @@ export class DriespelersScoreService {
   }
 
   // +++ === SCORE FUNCTIES
+  verwerkScore(score1, score2, score3): void {
+    const score = new Score();
+    score.scoreSpeler1 = score1;
+    score.scoreSpeler2 = score2;
+    score.scoreSpeler3 = score3;
+    score.ronde = this.boom.scores.length + 1;
 
-  // Bereken tegenscore spelers
-  
+    this.boom.scores.push(score);
+    this.berekenScores();
+    this.save();
+  }
+
+  undoLaatsteScore(): void {
+    this.boom.scores.pop();
+    this.berekenScores();
+    this.save();
+  }
+
+  // Bereken tegenscore spelers 
+  berekenScores(): void {
+    this.boom.puntenSpeler1 = 0;
+    this.boom.puntenSpeler2 = 0;
+    this.boom.puntenSpeler3 = 0;
+
+    for (let i = 0; i < this.boom.scores.length; i++) {
+      this.boom.puntenSpeler1 += this.boom.scores[i].scoreSpeler1;
+      this.boom.puntenSpeler2 += this.boom.scores[i].scoreSpeler2;
+      this.boom.puntenSpeler3 += this.boom.scores[i].scoreSpeler3;
+    }
+  }
 }
 
 // Data klassen
@@ -58,12 +85,6 @@ class Boom {
   puntenSpeler1: number = 0;
   puntenSpeler2: number = 0;
   puntenSpeler3: number = 0;
-  roemSpeler1: number = 0;
-  roemSpeler2: number = 0;
-  roemSpeler3: number = 0;
-  totaalSpeler1: number = 0;
-  totaalSpeler2: number = 0;
-  totaalSpeler3: number = 0;
 }
 
 class Score {
@@ -74,9 +95,4 @@ class Score {
   scoreSpeler1: number = 0;
   scoreSpeler2: number = 0;
   scoreSpeler3: number = 0;
-
-  // Roem per speler
-  roemSpeler1: number = 0;
-  roemSpeler2: number = 0;
-  roemSpeler3: number = 0;
 }

@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Drie spelers scoreblad</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Drie spelers scoreblad</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col><h3>Speler</h3></ion-col>
+      <ion-col><h3>Geboden</h3></ion-col>
+      <ion-col><h3>Roem</h3></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col><ion-select placeholder="Speler">
+        <ion-select-option value="speler1">{{score.boom.speler1}}</ion-select-option>
+        <ion-select-option value="speler2">{{score.boom.speler2}}</ion-select-option>
+        <ion-select-option value="speler3">{{score.boom.speler3}}</ion-select-option>
+      </ion-select></ion-col>
+      <ion-col>
+        <ion-input placeholder="80" (ionInput)="berekenTeBehalen($event, null)" type="number"></ion-input>
+      </ion-col>
+      <ion-col>
+        <ion-input placeholder="20" (ionInput)="berekenTeBehalen(null, $event)" type="number"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Te behalen</ion-col>
+      <ion-col><h3>{{teBehalen}}</h3></ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+    <ion-row><ion-col></ion-col></ion-row>
+    <ion-row>
+      <ion-col><b>Speler 1</b></ion-col>
+      <ion-col><b>Speler 2</b></ion-col>
+      <ion-col><b>Speler 3</b></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>{{score.boom.speler1}}</ion-col>
+      <ion-col>{{score.boom.speler2}}</ion-col>
+      <ion-col>{{score.boom.speler3}}</ion-col>
+    </ion-row>
+    <form [formGroup]="scores" (ngSubmit)="verwerkScore()">
+      <ion-row>
+        <ion-col><ion-input placeholder="Score" type="number" formControlName="score1"></ion-input></ion-col>
+        <ion-col><ion-input placeholder="Score" type="number" formControlName="score2"></ion-input></ion-col>
+        <ion-col><ion-input placeholder="Score" type="number" formControlName="score3"></ion-input></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col><ion-button type="submit">Voeg score toe</ion-button></ion-col>
+        <ion-col><ion-button color="warning" (click)="undoScore()">Undo</ion-button></ion-col>
+        <ion-col><ion-button color="danger" (click)="resetBoom()">Reset blad</ion-button></ion-col>
+      </ion-row>
+    </form>
+
+    <ion-row>
+      <ion-col></ion-col>
+    </ion-row>
+    <ion-row *ngFor="let score of score.boom.scores">
+      <ion-col>{{score.scoreSpeler1}}</ion-col>
+      <ion-col>{{score.scoreSpeler2}}</ion-col>
+      <ion-col>{{score.scoreSpeler3}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col><b>{{score.boom.puntenSpeler1}}</b></ion-col>
+      <ion-col><b>{{score.boom.puntenSpeler2}}</b></ion-col>
+      <ion-col><b>{{score.boom.puntenSpeler3}}</b></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

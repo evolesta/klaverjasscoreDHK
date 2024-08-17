@@ -31,6 +31,10 @@ const routes: Routes = [
     path: 'historie',
     loadChildren: () => import('./historie/historie.module').then( m => m.HistoriePageModule)
   },
+  {
+    path: 'drie-scoreblad',
+    loadChildren: () => import('./driespelers/drie-scoreblad/drie-scoreblad.module').then( m => m.DrieScorebladPageModule)
+  },
 ];
 
 @NgModule({
